@@ -1,0 +1,32 @@
+defaults:
+  - _self_
+  - expl_reward: rnd
+
+# task info 
+task_name: ${task_name}
+obs_shape: ???
+action_shape: ???
+
+
+# reward model
+rm_model: viper
+video_model: videogpt
+pretrain_rm: true
+ckpt_path: /exp_local/video_models/${reward.video_model}/${domain}/results/checkpoints/videogpt.pt
+cfg_path:  /exp_local/video_models/${reward.video_model}/${domain}/.hydra/config.yaml
+stat_path: /diffusion_reward/models/reward_models/statistics/${reward.rm_model}/${reward.reward_type}/${domain}.yaml
+
+reward_type: likelihood
+use_std: true
+compute_joint: false
+
+# exploration reward
+use_expl_reward: true
+expl_reward: ${expl_reward}
+expl_lr: ${lr}
+expl_scale: 0.5
+expl_std: false
+expl_update_interval: 100
+
+# environment reward
+use_env_reward: true

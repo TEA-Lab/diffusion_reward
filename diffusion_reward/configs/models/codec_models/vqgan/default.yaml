@@ -1,0 +1,40 @@
+defaults:
+  - _self_
+  - dataset@_global_: adroit
+
+# File path
+cwd: ${hydra:runtime.output_dir}
+
+# Env
+domain: adroit
+multi_task: true
+
+# Model
+latent_dim: 64
+code_dim: 64
+num_codebook_vectors: 1024
+channels: [128, 128, 256, 256]
+resolution: ${image_size}
+latent_size: 8
+
+# Training
+image_size: 64
+image_channels: 3
+beta: 0.25
+device: cuda
+batch_size: 32
+epochs: 200
+learning_rate: 1e-4
+beta1: 0.5
+beta2: 0.9
+disc_start: 1000
+disc_factor: 0.1
+rec_loss_factor: 1
+perceptual_loss_factor: 0.1
+dataset_path: /video_dataset/${domain}
+
+
+# Working space
+hydra:
+  run:
+    dir: ./exp_local/codec_models/vqgan/${domain}

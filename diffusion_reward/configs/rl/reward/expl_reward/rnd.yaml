@@ -1,0 +1,4 @@
+_target_: diffusion_reward.models.reward_models.expl_rewards.rnd.RND
+obs_shape: ???
+action_shape: ???
+device: ${device}

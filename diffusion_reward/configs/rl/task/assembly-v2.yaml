@@ -1,0 +1,5 @@
+domain: metaworld
+task_name: assembly-v2
+action_repeat: 3
+num_train_frames: 3100000
+stddev_schedule: 'linear(1.0,0.1,3000000)'

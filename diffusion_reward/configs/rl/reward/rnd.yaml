@@ -1,0 +1,23 @@
+defaults:
+  - _self_
+  - expl_reward: rnd
+
+# task info 
+task_name: ${task_name}
+obs_shape: ???
+action_shape: ???
+
+
+# reward model
+rm_model: rnd
+pretrain_rm: true # but none
+
+# exploration reward
+use_expl_reward: true
+expl_reward: ${expl_reward}
+expl_lr: ${lr}
+expl_scale: 1
+expl_update_interval: 100
+
+# environment reward
+use_env_reward: true

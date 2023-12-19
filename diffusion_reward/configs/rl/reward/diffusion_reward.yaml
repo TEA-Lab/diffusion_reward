@@ -1,0 +1,34 @@
+defaults:
+  - _self_
+  - expl_reward: rnd
+
+# task info 
+task_name: ${task_name}
+obs_shape: ???
+action_shape: ???
+
+# reward model
+rm_model: diffusion_reward
+video_model: vqdiffusion
+pretrain_rm: true
+ckpt_path: /exp_local/video_models/${reward.video_model}/${domain}/checkpoint/best.pth
+cfg_path:  /exp_local/video_models/${reward.video_model}/${domain}/.hydra/config.yaml
+stat_path: /diffusion_reward/models/reward_models/statistics/${reward.rm_model}/${reward.reward_type}/${domain}.yaml
+
+reward_type: entropy
+skip_step: 9
+noise: true
+num_sample: 1
+noise_scale: 1
+use_std: true
+
+# exploration reward
+use_expl_reward: true
+expl_reward: ${expl_reward}
+expl_lr: ${lr}
+expl_scale: 0.95
+expl_std: true
+expl_update_interval: 100
+
+# environment reward
+use_env_reward: true

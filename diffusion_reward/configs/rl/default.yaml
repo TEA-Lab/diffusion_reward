@@ -1,0 +1,51 @@
+defaults:
+  - _self_
+  - task@_global_: door
+  - agent: drqv2
+  - reward: diffusion_reward
+
+# task settings
+frame_stack: 1
+action_repeat: 2
+discount: 0.99
+
+# train settings
+num_seed_frames: 4000
+update_every_steps: 2
+
+# eval
+eval_every_frames: 20000
+num_eval_episodes: 10
+
+# snapshot
+save_snapshot: false
+
+# wandb
+use_wandb: false
+
+# replay buffer
+replay_buffer_size: 1000000
+replay_buffer_num_workers: 4
+nstep: 3
+batch_size: 256
+
+# misc
+seed: 121
+device: cuda
+save_video: true
+save_train_video: false
+use_tb: true
+
+# experiment
+exp_name: test
+
+# agent
+lr: 1e-4
+feature_dim: 50
+
+# reward model
+use_rm: true
+
+hydra:
+  run:
+    dir: ./exp_local/rl/${now:%Y.%m.%d}/${task_name}/${reward.rm_model}/${exp_name}_${seed}

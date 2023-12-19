@@ -1,0 +1,46 @@
+defaults:
+  - _self_
+  - dataset@_global_: adroit
+
+# env
+domain: adroit
+
+# model
+codec:
+  latent_dim: 64
+  code_dim: 64
+  channels: [128, 128, 256, 256]
+  resolution: ${image_size}
+  latent_size: 8
+  checkpoint_path: /exp_local/codec_models/vqgan/${domain}/results/checkpoints/vqgan.pt
+  image_channels: 3
+  beta: 0.25
+  device: ${device}
+  num_codebook_vectors: 1024
+
+transformer:
+  vocab_size: ${codec.num_codebook_vectors}
+  block_size: 5120
+  n_layer: 8
+  n_head: 8
+  n_embd: 512
+  use_vqemb: ${use_vqemb}
+  code_dim: ${codec.code_dim}
+
+pkeep: 0.8
+sos_token: 0
+num_frames: 2
+frame_skip: 1
+use_vqemb: true
+device: cuda
+
+# training
+image_size: 64
+batch_size: 32
+dataset_path: /video_dataset/${domain}
+
+# Working space
+hydra:
+  run:
+    dir: ./exp_local/video_models/videogpt/${domain}
+

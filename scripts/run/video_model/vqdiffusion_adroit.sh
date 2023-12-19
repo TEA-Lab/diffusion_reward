@@ -1,0 +1,1 @@
+python scripts/train_vqdiffusion.py dataset=adroit

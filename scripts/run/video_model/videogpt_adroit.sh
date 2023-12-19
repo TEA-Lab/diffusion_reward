@@ -1,0 +1,1 @@
+python scripts/train_videogpt.py dataset=adroit

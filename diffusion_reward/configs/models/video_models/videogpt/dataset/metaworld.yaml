@@ -1,0 +1,3 @@
+domain: metaworld
+latent_size: 8
+epochs: 5000

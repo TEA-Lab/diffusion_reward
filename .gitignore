@@ -152,6 +152,13 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# dataset and exp
+*video_dataset*
+*exp_local*
+*mujoco-py*
+*diffusion-reward-mw*
+*Metaworld*
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore

@@ -1,0 +1,80 @@
+defaults:
+  - _self_
+  - dataset@_global_: adroit
+
+exp_name: null
+log_frequency: 100
+load_path: null
+resume_name: null
+auto_resume: false
+
+# ddp
+num_node: 1
+node_rank: null
+dist_usrl: null
+gpu: 0
+sync_bn: false
+tensorboard: false
+timestamp: false
+
+# Random
+seed: null
+cudnn_deterministic: false
+amp: false
+debug: false
+
+# Modify config
+opts: null
+
+# Solver
+solver:
+  base_lr: 3.0e-6
+  adjust_lr: none # not adjust lr according to total batch_size
+  max_epochs: 100
+  save_epochs: 20
+  validation_epochs: 1
+  sample_iterations: 400  # epoch #30000
+  print_specific_things: True
+
+  # config for ema
+  ema:
+    decay: 0.99
+    update_interval: 25
+    device: cpu
+
+  clip_grad_norm:
+    target: diffusion_reward.models.video_models.vqdiffusion.engine.clip_grad_norm.ClipGradNorm
+    params:
+      start_iteration: 0
+      end_iteration: 5000
+      max_norm: 0.5
+  optimizers_and_schedulers: # a list of configures, so we can config several optimizers and schedulers
+  - name: none # default is None
+    optimizer:
+      target: torch.optim.AdamW
+      params: 
+        betas: [0.9, 0.96]
+        weight_decay: 4.5e-2
+    scheduler:
+      step_iteration: 1
+      target: diffusion_reward.models.video_models.vqdiffusion.engine.lr_scheduler.ReduceLROnPlateauWithWarmup
+      params:
+        factor: 0.5
+        patience: 100000
+        min_lr: 1.0e-6
+        threshold: 1.0e-1
+        threshold_mode: rel
+        warmup_lr: 4.5e-4 # the lr to be touched after warmup
+        warmup: 5000
+
+save_dir: ???
+dist_url: ???
+ngpus_per_node: ???
+world_size: ???
+local_rank: ???
+global_rank: ???
+distributed: false
+
+hydra:
+  run:
+    dir: ./exp_local/video_models/vqdiffusion/${exp_name}

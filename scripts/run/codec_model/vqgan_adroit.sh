@@ -1,0 +1,1 @@
+python scripts/train_vqgan.py dataset=adroit
