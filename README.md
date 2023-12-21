@@ -1,12 +1,13 @@
 # Diffusion Reward
-[[Project page]](https://diffusion-reward.github.io/)
+[[Project Website]](https://diffusion-reward.github.io/)
 [[Paper]]()
 [[Data]](https://huggingface.co/datasets/tauhuang/diffusion_reward/tree/main)
 [[Models]](https://huggingface.co/tauhuang/diffusion_reward/tree/main)
 
 This is the official PyTorch implementation of the paper "[**Diffusion Reward: Learning Rewards via Conditional Video Diffusion**]()" by 
 
-[Tao Huang](https://taohuang13.github.io/)<sup>\*</sup>, [Guangqi Jiang]()<sup>\*</sup>, [Yanjie Ze](https://yanjieze.com/), [Huazhe Xu](http://hxu.rocks/).
+[Tao Huang](https://taohuang13.github.io/)<sup>\*</sup>, [Guangqi Jiang](https://lucca-cherries.github.io/)<sup>\*</sup>, [Yanjie Ze](https://yanjieze.com/), [Huazhe Xu](http://hxu.rocks/).
+
 <p align="left">
   <img width="99%" src="docs/diffusion_reward_overview.png">
 </p>
@@ -46,7 +47,7 @@ cd ..
 | Adroit | 3 | 150 | 23.8M | [VRL3](https://github.com/microsoft/VRL3) | [Download](https://huggingface.co/datasets/tauhuang/diffusion_reward/tree/main/adroit) 
 | MetaWorld | 7 | 140 | 38.8M | [Scripts](https://github.com/Farama-Foundation/Metaworld/blob/master/scripts/demo_sawyer.py) | [Download](https://huggingface.co/datasets/tauhuang/diffusion_reward/tree/main/metaworld)|
 
-You can download the datasets and place them to  `/video_dataset` to reproduce the experimental results in the paper. 
+You can download the datasets and place them to  `/video_dataset` to reproduce the results in this paper. 
 
 ## Pretrain Reward Models
 Train VQGAN encoder. 
@@ -59,7 +60,7 @@ bash scripts/run/video_model/${video_model}_${domain}.sh    # [vqdiffusion, vide
 ```
 
 ### (Optinal) Download Pre-trained Models
-We also provide the pre-trained reward models (including Diffusion Reward and VIPER) used in this paper for result reproduction. You may download the models with configuration files [here](https://huggingface.co/tauhuang/diffusion_reward/tree/main), and place the downloaded folders in `/exp_local`.
+We also provide the pre-trained reward models (including Diffusion Reward and VIPER) used in this paper for result reproduction. You may download the models with configuration files [here](https://huggingface.co/tauhuang/diffusion_reward/tree/main), and place the folders in `/exp_local`.
 
 ## Train RL with Pre-trained Rewards 
 Train DrQv2 with different rewards.
@@ -91,6 +92,9 @@ diffusion_reward
 # ✉️ Contact
 For any questions, please feel free to email taou.cs13@gmail.com.
 
+
+# 🙏 Acknowledgement
+Our code is built upon [VQGAN](https://github.com/dome272/VQGAN-pytorch), [VQ-Diffusion](https://github.com/microsoft/VQ-Diffusion), [VIPER](https://github.com/Alescontrela/viper_rl), [AMP](https://github.com/med-air/DEX), [RND](https://github.com/jcwleo/random-network-distillation-pytorch), and [DrQv2](https://github.com/facebookresearch/drqv2). We thank all these authors for their nicely open sourced code and their great contributions to the community.
 
 # 🏷️ License
 This repository is released under the MIT license. See [LICENSE](LICENSE) for additional details.
