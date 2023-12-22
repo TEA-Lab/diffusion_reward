@@ -90,7 +90,7 @@ diffusion_reward
 ```
 
 # ✉️ Contact
-For any questions, please feel free to email taou.cs13@gmail.com.
+For any questions, please feel free to email taou.cs13@gmail.com or luccachiang@gmail.com.
 
 
 # 🙏 Acknowledgement
