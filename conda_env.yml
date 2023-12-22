@@ -1,4 +1,4 @@
-name: diffusion_reward_test
+name: diffusion_reward
 channels:
   - defaults
 dependencies:

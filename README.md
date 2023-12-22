@@ -1,6 +1,6 @@
 # Diffusion Reward
 [[Project Website]](https://diffusion-reward.github.io/)
-[[Paper]]()
+[[Paper]](https://arxiv.org/abs/2312.14134)
 [[Data]](https://huggingface.co/datasets/tauhuang/diffusion_reward/tree/main)
 [[Models]](https://huggingface.co/tauhuang/diffusion_reward/tree/main)
 
