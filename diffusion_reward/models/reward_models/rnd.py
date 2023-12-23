@@ -9,7 +9,6 @@ class RND(nn.Module):
 
         # set attribute
         for attr_name, attr_value in cfg.items():
-            print(attr_name, attr_value)
             setattr(self, attr_name, attr_value)
 
         # build exploration reward model
