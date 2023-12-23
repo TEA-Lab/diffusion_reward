@@ -82,9 +82,9 @@ diffusion_reward
   |    |- wrapper.py       # env wrapper and utils
   |
   |- models                # implements core codec models and video models
-  |    |- codec_models.py  # image encoder, e.g., VQGAN
-  |    |- video_models.py  # video prediction models, e.g., VQDiffusion and VideoGPT
-  |    |- reward_models.py # reward models, e.g., Diffusion Reward and VIPER
+  |    |- codec_models     # image encoder, e.g., VQGAN
+  |    |- video_models     # video prediction models, e.g., VQDiffusion and VideoGPT
+  |    |- reward_models    # reward models, e.g., Diffusion Reward and VIPER
   |
   |- rl                    # implements core rl algorithms
 ```
