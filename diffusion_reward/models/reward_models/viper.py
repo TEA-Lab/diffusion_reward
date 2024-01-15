@@ -50,7 +50,8 @@ class VIPER(nn.Module):
         seq_len = x.shape[1]
         num_frames = self.model_cfg.num_frames + 1
         n_skip = self.model_cfg.frame_skip
-        subseq_len = num_frames * n_skip
+        #subseq_len = num_frames * n_skip
+        subseq_len = self.model_cfg.num_frames * n_skip
 
         x = x.permute(0, 1, 4, 2 ,3)
         embs, indices = self.model.encode_to_z(x)
@@ -58,35 +59,37 @@ class VIPER(nn.Module):
         embs = embs.reshape(embs.shape[0], seq_len, indices.shape[-1], -1)
         
         if reward_type == 'likelihood':
-            post_idxes = list(range(seq_len - subseq_len + 1))
+            post_idxes = list(range(seq_len - subseq_len))
+            batch_indices = [indices[:, idx:idx+subseq_len+n_skip:n_skip] for idx in post_idxes]
+            batch_indices = torch.stack(batch_indices, dim=0)
+            batch_indices = batch_indices.squeeze(1).reshape(batch_indices.shape[0], -1)
+
+            batch_embs = [embs[:, idx:idx+subseq_len+n_skip:n_skip] for idx in post_idxes]
+            batch_embs = torch.stack(batch_embs, dim=0)
+            batch_embs = batch_embs.squeeze(1).reshape(batch_embs.shape[0], -1, batch_embs.shape[-1])
+
+            pre_batch_indices = [indices[:, idx].tile((1, num_frames)) for idx in range(subseq_len)]
+            pre_batch_indices = torch.concat(pre_batch_indices, dim=0)
+            batch_indices = torch.concat([pre_batch_indices, batch_indices], dim=0)
+
+            pre_batch_embs = [embs[:, idx].tile((1, num_frames, 1)) for idx in range(subseq_len)]
+            pre_batch_embs = torch.concat(pre_batch_embs, dim=0)
+            batch_embs = torch.concat([pre_batch_embs, batch_embs], dim=0)
+        elif reward_type == 'entropy':
+            post_idxes = list(range(seq_len - subseq_len + n_skip))
             batch_indices = [indices[:, idx:idx+subseq_len:n_skip] for idx in post_idxes]
             batch_indices = torch.stack(batch_indices, dim=0)
             batch_indices = batch_indices.squeeze(1).reshape(batch_indices.shape[0], -1)
+
             batch_embs = [embs[:, idx:idx+subseq_len:n_skip] for idx in post_idxes]
             batch_embs = torch.stack(batch_embs, dim=0)
             batch_embs = batch_embs.squeeze(1).reshape(batch_embs.shape[0], -1, batch_embs.shape[-1])
 
-            pre_batch_indices = [indices[:, idx].tile((1, num_frames)) for idx in range(subseq_len-1)]
+            pre_batch_indices = [indices[:, idx].tile((1, num_frames-1)) for idx in range(subseq_len-n_skip)]
             pre_batch_indices = torch.concat(pre_batch_indices, dim=0)
             batch_indices = torch.concat([pre_batch_indices, batch_indices], dim=0)
 
-            pre_batch_embs = [embs[:, idx].tile((1, num_frames, 1)) for idx in range(subseq_len-1)]
-            pre_batch_embs = torch.concat(pre_batch_embs, dim=0)
-            batch_embs = torch.concat([pre_batch_embs, batch_embs], dim=0)
-        elif reward_type == 'entropy':
-            post_idxes = list(range(seq_len - subseq_len + 2))
-            batch_indices = [indices[:, idx:idx+subseq_len-n_skip:n_skip] for idx in post_idxes]
-            batch_indices = torch.stack(batch_indices, dim=0)
-            batch_indices = batch_indices.squeeze(1).reshape(batch_indices.shape[0], -1)
-            batch_embs = [embs[:, idx:idx+subseq_len-n_skip:n_skip] for idx in post_idxes]
-            batch_embs = torch.stack(batch_embs, dim=0)
-            batch_embs = batch_embs.squeeze(1).reshape(batch_embs.shape[0], -1, batch_embs.shape[-1])
-
-            pre_batch_indices = [indices[:, idx].tile((1, num_frames-1)) for idx in range(subseq_len-2)]
-            pre_batch_indices = torch.concat(pre_batch_indices, dim=0)
-            batch_indices = torch.concat([pre_batch_indices, batch_indices], dim=0)
-
-            pre_batch_embs = [embs[:, idx].tile((1, num_frames-1, 1)) for idx in range(subseq_len-2)]
+            pre_batch_embs = [embs[:, idx].tile((1, num_frames-1, 1)) for idx in range(subseq_len-n_skip)]
             pre_batch_embs = torch.concat(pre_batch_embs, dim=0)
             batch_embs = torch.concat([pre_batch_embs, batch_embs], dim=0)
         else:

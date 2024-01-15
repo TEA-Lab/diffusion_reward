@@ -65,8 +65,9 @@ We also provide the pre-trained reward models (including Diffusion Reward and VI
 ## Train RL with Pre-trained Rewards 
 Train DrQv2 with different rewards.
 ```bash
-bash scripts/run/rl/drqv2_${domain}_${reward}.sh    # [adroit, metaworld]_[diffusion_reward, viper, viper_std, amp, rnd, raw_sparse_reward]
+bash scripts/run/rl/drqv2_${domain}_${reward}.sh ${task}    # [adroit, metaworld]_[diffusion_reward, viper, viper_std, amp, rnd, raw_sparse_reward]
 ```
+Notice that you should login [wandb](https://wandb.ai/site) for logging experiments online. Turn it off, if you aim to log locally, in configuration file [here](diffusion_reward/configs/rl//default.yaml#L24).
 
 # 🧭 Code Navigation
 

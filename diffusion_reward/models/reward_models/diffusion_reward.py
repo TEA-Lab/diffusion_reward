@@ -90,9 +90,9 @@ class DiffusionReward(nn.Module):
         assert x.max() <= 1
         # preprocessing
         seq_len = x.shape[1]
-        num_frames = self.model.cfg.params['condition_emb_config']['params']['num_cond_frames']
+        num_frames = self.model.cfg.params['condition_emb_config']['params']['num_cond_frames'] + 1
         n_skip = self.model.frame_skip
-        subseq_len = (num_frames + 1) * n_skip
+        subseq_len = (num_frames - 1) * n_skip
 
         x = x.permute(0, 1, 4, 2 ,3)
         _, indices = self.model.content_codec.encode_to_z(x)
@@ -101,25 +101,25 @@ class DiffusionReward(nn.Module):
 
         if reward_type == 'entropy':
             # only return conditional frames
-            post_idxes = list(range(seq_len - subseq_len + 2))
-            batch_indices = [indices[:, idx:idx+subseq_len-n_skip:n_skip] for idx in post_idxes]
+            post_idxes = list(range(seq_len - subseq_len + n_skip))
+            batch_indices = [indices[:, idx:idx+subseq_len:n_skip] for idx in post_idxes]
             batch_indices = torch.stack(batch_indices, dim=0)
             batch_indices = batch_indices.squeeze(1).reshape(batch_indices.shape[0], -1)    
             
-            if subseq_len - 2 > 0:
-                pre_batch_indices = [indices[:, idx].tile((1, num_frames)) for idx in range(subseq_len-2)]
+            if subseq_len - n_skip > 0:
+                pre_batch_indices = [indices[:, idx].tile((1, num_frames - 1)) for idx in range(subseq_len-n_skip)]
                 pre_batch_indices = torch.concat(pre_batch_indices, dim=0)
                 batch_indices = torch.concat([pre_batch_indices, batch_indices], dim=0)
             cond = {'condition_token': batch_indices}
         elif reward_type == 'likelihood':
             # return conditional frames + current frame
-            post_idxes = list(range(seq_len - subseq_len + 1))
-            batch_indices = [indices[:, idx:idx+subseq_len-n_skip:n_skip] for idx in post_idxes]
+            post_idxes = list(range(seq_len - subseq_len))
+            batch_indices = [indices[:, idx:idx+subseq_len+n_skip:n_skip] for idx in post_idxes]
             batch_indices = torch.stack(batch_indices, dim=0)
             batch_indices = batch_indices.squeeze(1).reshape(batch_indices.shape[0], -1)    
             
-            if subseq_len - 2 > 0:
-                pre_batch_indices = [indices[:, idx].tile((1, num_frames)) for idx in range(subseq_len-1)]
+            if subseq_len - n_skip > 0:
+                pre_batch_indices = [indices[:, idx].tile((1, num_frames)) for idx in range(subseq_len)]
                 pre_batch_indices = torch.concat(pre_batch_indices, dim=0)
                 batch_indices = torch.concat([pre_batch_indices, batch_indices], dim=0)
             cond = {'condition_token': batch_indices}
