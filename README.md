@@ -107,7 +107,7 @@ If you find our work useful, please consider citing:
 @article{Huang2023DiffusionReward,
   title={Diffusion Reward: Learning Rewards via Conditional Video Diffusion},
   author={Tao Huang and Guangqi Jiang and Yanjie Ze and Huazhe Xu},
-  journal={arxiv}, 
-  year={2023},
+  journal={European Conference on Computer Vision (ECCV)}, 
+  year={2024},
 }
 ```
